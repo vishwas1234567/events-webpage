@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FutureTech Summit 2026
 
-## Getting Started
+A premium, high-performance event landing page built with **Next.js**, **Contentstack**, and **Framer Motion**. This project showcases a professional-grade conference website with dynamic content management and state-of-the-art web aesthetics.
 
-First, run the development server:
+---
 
+## ✨ Features
+
+- **Professional Design System**: A high-end dark theme featuring glassmorphism, glowing accents, and curated typography (`Syne` and `Inter`).
+- **Dynamic Contentstack Integration**: All data—including Hero content, Speakers, Schedules, and Rich Text sections—is fetched directly from Contentstack CMS.
+- **Micro-Animations**:
+  - **Staggered Entrances**: Navbar, Hero, and Speakers sections reveal themselves with smooth, coordinated animations.
+  - **Hover Effects**: Interactive cards and buttons with premium glowing effects.
+  - **Scroll reveal**: Schedule timeline elements slide in as you scroll.
+- **Robust Data Handling**: 
+  - Automated HTML stripping for clean schedule descriptions.
+  - Smart fallback for missing speaker photos using dynamic UI avatars.
+  - Detailed reference resolution for nested speaker data within schedule entries.
+- **SEO Optimized**: Fully configured metadata with Next.js SEO APIs for professional social sharing and search ranking.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **CMS**: [Contentstack](https://www.contentstack.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Typography**: [Google Fonts](https://fonts.google.com/) via `next/font`
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
+
+### 2. Installation
+Clone the repository and install the dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd event-site
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. CMS Configuration
+The application is connected to a Contentstack Stack. The configuration is located in `lib/contentstack.js`:
+```javascript
+export const Stack = contentstack.Stack({
+  api_key: "blt...",
+  delivery_token: "cs...",
+  environment: "development"
+});
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Running Locally
+Start the development server:
+```bash
+npm run dev
+```
+The site will be available at [http://localhost:3000](http://localhost:3000).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📂 Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `app/`: Next.js App Router pages and global styles.
+  - `page.tsx`: Main landing page with dynamic block rendering logic.
+  - `globals.css`: Core design system and theme definitions.
+- `components/`: Modular UI components.
+  - `Navbar.tsx`: Animated fixed navigation.
+  - `Hero.tsx`: High-impact landing section.
+  - `Speakers.tsx`: Dynamic speaker lineup cards.
+  - `Schedule.tsx`: Timeline-based schedule entries.
+- `lib/`: Utilities and API configurations.
+  - `contentstack.js`: Contentstack SDK initialization.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧠 Future Enhancements
 
-## Deploy on Vercel
+- **User Authentication**: Allow users to register and manage their summit tickets.
+- **Workshops Booking**: Interactive booking system for individual sessions.
+- **Live Stream Integration**: Embed professional video players for virtual attendees.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed with ❤️ by the FutureTech Team.
