@@ -1,65 +1,80 @@
-import Image from "next/image";
+import { Stack } from "../lib/contentstack";
+import Hero from "@/components/Hero";
+import Speakers from "@/components/Speakers";
+import Schedule from "@/components/Schedule";
+import Navbar from "@/components/Navbar";
 
-export default function Home() {
+async function getPage() {
+  const Query = Stack.ContentType("page").Query();
+
+  const data = await Query
+    .includeReference([
+      "modular_blocks.speaker_section.speakers",
+      "modular_blocks.schedule_section.schedule_list",
+      "modular_blocks.schedule_section.schedule_list.speaker",
+    ])
+    .toJSON()
+    .find();
+
+  return data[0][0];
+}
+
+export default async function Home() {
+  const page: any = await getPage();
+  const blocks: any[] = page?.modular_blocks ?? [];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Navbar />
+
+      <main>
+        {blocks.map((block: any, index: number) => {
+          if (block.hero)
+            return <Hero key={index} data={block.hero} />;
+
+          if (block.speaker_section)
+            return <Speakers key={index} data={block.speaker_section} />;
+
+          if (block.schedule_section)
+            return <Schedule key={index} data={block.schedule_section} />;
+
+          if (block.rich_text_section)
+            return (
+              <section
+                key={index}
+                id="about"
+                style={{
+                  background: "var(--bg)",
+                  padding: "7rem 1.5rem",
+                  borderTop: "1px solid var(--border)",
+                }}
+              >
+                <div className="max-w-2xl mx-auto">
+                  <div
+                    className="rich-prose"
+                    dangerouslySetInnerHTML={{
+                      __html: block.rich_text_section.content,
+                    }}
+                  />
+                </div>
+              </section>
+            );
+
+          return null;
+        })}
       </main>
-    </div>
+
+      <footer
+        style={{
+          borderTop: "1px solid var(--border)",
+          padding: "2rem 1.5rem",
+          textAlign: "center",
+          color: "var(--text-faint)",
+          fontSize: ".8rem",
+        }}
+      >
+        © 2026 FutureTech Summit. All rights reserved.
+      </footer>
+    </>
   );
 }
